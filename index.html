@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sureya's Eid Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --deep-emerald: #0A2F1D; 
+            --warm-chocolate: #251614;
+            --soft-cream: #FDFBF7;
+            --light-gold: #F3E5AB;
+        }
+
+        body, html {
+            margin: 0; padding: 0; min-height: 100%;
+            background: linear-gradient(135deg, var(--warm-chocolate) 0%, #120a09 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: var(--soft-cream); overflow-x: hidden;
+        }
+
+        #stars-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+        }
+
+        .sparkle {
+            position: fixed; background: #fff; border-radius: 50%;
+            pointer-events: none; opacity: 0.4;
+            animation: fall linear infinite; z-index: 1;
+        }
+        @keyframes fall { to { transform: translateY(100vh) rotate(360deg); } }
+
+        .main-wrapper {
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 40px 20px; position: relative; z-index: 10;
+        }
+
+        .container {
+            width: 100%; max-width: 480px;
+            background: rgba(37, 22, 20, 0.85); 
+            backdrop-filter: blur(25px); border-radius: 60px;
+            padding: 50px 30px; border: 1.5px solid rgba(212, 175, 55, 0.2);
+            text-align: center; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+
+        .arabic-name {
+            font-family: 'Amiri', serif; font-size: 5rem;
+            margin: 0; color: white; text-shadow: 0 0 30px var(--gold);
+            line-height: 1; direction: rtl;
+        }
+
+        .flower-divider {
+            font-size: 2.8rem;
+            margin: 20px 0;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px var(--light-gold));
+            animation: slowFloat 6s ease-in-out infinite, slowRotate 15s linear infinite;
+        }
+
+        @keyframes slowFloat {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+            50% { transform: translateY(-15px) scale(1.15); opacity: 1; }
+        }
+
+        @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .profile-container { position: relative; width: 150px; margin: 0 auto 10px auto; }
+        .profile-img {
+            width: 140px; height: 140px; border-radius: 50%;
+            border: 4px solid var(--gold); object-fit: cover;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .eid-player {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--gold);
+            padding: 12px 25px;
+            border-radius: 50px;
+            margin: 15px auto 25px auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.4s;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        .eid-player:hover { background: rgba(212, 175, 55, 0.15); transform: scale(1.05); }
+        .play-btn-icon { color: var(--gold); font-size: 1.3rem; }
+        .player-text { font-size: 0.85rem; font-weight: 600; color: white; letter-spacing: 0.5px; }
+
+        .eid-greeting-box {
+            margin: 25px 0; padding: 25px;
+            background: rgba(10, 47, 29, 0.4); border-radius: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .eid-mubarak-text {
+            font-family: 'Amiri', serif; font-size: 2.5rem; font-weight: bold;
+            color: var(--light-gold); text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .greeting-message {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--soft-cream);
+        }
+
+        .btn-tg {
+            width: 100%; padding: 15px; border-radius: 20px; background: var(--gold);
+            color: var(--warm-chocolate); font-weight: bold; text-decoration: none; display: block; margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        .btn-tg:hover { background: var(--light-gold); transform: translateY(-2px); }
+
+        .secret-section { padding: 20px; border-radius: 30px; background: rgba(0,0,0,0.2); border: 1px dashed rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body>
+
+    <div id="stars-container"></div>
+
+    <audio id="eidTalbiyah" loop preload="auto">
+        <source src="talbiyah.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="main-wrapper">
+        <div class="container">
+            <div class="arabic-name">ثُـــــــــــــرَيَّـا</div>
+
+            <div><span class="flower-divider">🌙</span></div>
+
+            <div class="profile-container">
+                <img src="sureya.jpg" alt="Sureya" class="profile-img">
+            </div>
+
+            <div class="eid-player" onclick="toggleMusic()" id="playerUI">
+                <i class="fas fa-play play-btn-icon" id="playIcon"></i>
+                <span class="player-text">Labbaik Allahumma Labbaik</span>
+            </div>
+
+            <div class="eid-greeting-box">
+                <div class="eid-mubarak-text">Eid Al-Adha Mubarak</div>
+                <p class="greeting-message">
+                    My dearest sister Sureya, wishing you a beautiful and blessed Eid al-Adha. May this special occasion bring immense joy, peace, and prosperity to your life. May Allah accept your good deeds and answer your prayers. ✨
+                </p>
+            </div>
+
+            <a href="https://t.me/strong3505" target="_blank" class="btn-tg">
+                <i class="fab fa-telegram-plane"></i> Contact on Telegram
+            </a>
+
+            <div class="secret-section">
+                <input type="password" id="passInput" style="background:rgba(255,255,255,0.05); border: 1px solid var(--gold); color:white; padding:10px; border-radius:15px; text-align:center; width: 80%;" placeholder="Secret Key">
+                <button onclick="checkPass()" style="background:var(--gold); color:var(--warm-chocolate); border:none; padding:12px; border-radius:15px; font-weight:bold; cursor:pointer; margin-top:10px; width: 80%;">Unlock</button>
+                <div id="secret-content" style="display:none; margin-top:15px; color: var(--light-gold); font-weight: bold;">
+                    ✨ "Sureya, may your Eid be filled with pure light and endless blessings. 🧕." ✨
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById("eidTalbiyah");
+        const icon = document.getElementById("playIcon");
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Audio playback blocked by browser settings until user interaction"));
+                icon.className = "fas fa-pause play-btn-icon";
+            } else {
+                audio.pause();
+                icon.className = "fas fa-play play-btn-icon";
+            }
+        }
+
+        // Background falling sparkles effect
+        function createSparkle() {
+            const container = document.getElementById('stars-container');
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.top = '-2vh';
+            s.style.width = Math.random() * 3 + 1 + 'px';
+            s.style.animationDuration = Math.random() * 3 + 4 + 's';
+            container.appendChild(s);
+            setTimeout(() => s.remove(), 7000);
+        }
+        setInterval(createSparkle, 400);
+
+        // Password verification logic (handles whitespace trims and ignores case variance)
+        function checkPass() {
+            const input = document.getElementById('passInput').value.trim().toLowerCase();
+            if(input === 'sureya') {
+                document.getElementById('secret-content').style.display = 'block';
+                confetti({ particleCount: 150, spread: 70 });
+            }
+        }
+    </script>
+</body>
+</html>
